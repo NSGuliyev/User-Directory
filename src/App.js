@@ -1,8 +1,16 @@
 import React from "react";
-import HelloBootstrap from "./components/HelloBootstrap";
+import Alert from "./components/Alert";
 
 function App() {
-  return <HelloBootstrap />;
+
+  return (
+  <>
+  
+  <Alert type="danger">Invalid user id or password</Alert>
+  <Alert type="success">Invalid user id or password</Alert>
+  <Alert type="info">Invalid user id or password</Alert>
+  </>
+  )
 }
 
 export default App;
