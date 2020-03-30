@@ -1,6 +1,6 @@
 import React from "react";
 
-function EmployeeList() {
+function EmployeeList(props) {
     return (
         <div className="col-6">
             <div className="card mb-4">
@@ -21,17 +21,17 @@ function EmployeeList() {
                     <div className="card col-12" style={{ width: 540, marginTop: 10 }}>
                         <div className="row no-gutters">
                             <div className="col-md-2">
-                                <img src="https://www.car-logos.org/wp-content/uploads/2011/09/bmw.png" className="card-img" alt="..." />
+                                <img src={props.image} className="card-img" alt="..." />
                             </div>
                             <div className="col-md-10">
                                 <div className="card-body">
-                                    <h5 className="card-title">Franz Josef Popp</h5>
+                                    <h5 className="card-title">{props.name}</h5>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
+                
             </div>
         </div>
     )
