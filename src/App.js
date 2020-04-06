@@ -1,51 +1,72 @@
 import React, { Component } from "react";
 import Container from "./components/Container";
-import Jumbotron from "./components/Jumpotron"
+import Jumbotron from "./components/Jumpotron";
 import InfoHolder from "./components/InfoHolder";
 import EmployeeList from "./components/EmployeeList";
-import EmployeeInformation from "./components/EmployeeInformation";
-import employee from "./employee.json"
+import employee from "./employee.json";
 import EmpListHeader from "./components/EmpListHeader";
-import Search from "./components/Search";
-import EmployeeCard from "./components/EmployeeCard";
-import EmployeeInfoHeader from "./components/EmployeeInfoHeader"
-import EmployeeInfoCard from "./components/EmployeeInfoCard";
-
-
+import Table from "./components/Table";
+import TableHead from "./components/TableHead";
+import TableBody from "./components/TableBody";
 
 class App extends Component {
+  state = { employee, search: "" };
 
-  state = { employee };
+  updateSearch (event) {
+    this.setState({search: event.target.value.substr(0,18)})
+  }
 
   render() {
+    let filteredEmployee = this.state.employee.filter(
+      (em)=> {
+        return em.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
+      }
+    )
     return (
       <Container>
         <Jumbotron />
         <InfoHolder>
-
           <EmployeeList>
             <EmpListHeader />
-            <Search />
+            <>
+              <nav className="navbar navbar-light bg-light">
+                <form className="form-inline">
+                  <input
+                    className=" col form-control mr-sm-2"
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                    value={this.state.search}
+                    onChange={this.updateSearch.bind(this)}
+                  />
+                  <button
+                    className="btn btn-outline-success my-2 my-sm-0"
+                    type="submit"
+                  >
+                    Search
+                  </button>
+                </form>
+              </nav>
+            </>
 
-            {this.state.employee.map(employees => (
-              <EmployeeCard
-                image={employees.image}
-                name={employees.name}
-              />
-            ))}
+            <Table>
+              <TableHead />
+              {filteredEmployee.map((employees) => (
+                <TableBody
+                  image={employees.image}
+                  id={employees.id}
+                  name={employees.name}
+                  occupation={employees.occupation}
+                  location={employees.location}
+                  email={employees.email}
+                  phone={employees.phone}
+                /> 
+              ))}
+            </Table>
           </EmployeeList>
-
-          <EmployeeInformation>
-            <EmployeeInfoHeader />
-            <EmployeeInfoCard />
-
-          </EmployeeInformation>
-
-
-
         </InfoHolder>
       </Container>
-    )
+    );
   }
 }
 
