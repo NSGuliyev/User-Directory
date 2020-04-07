@@ -10,18 +10,35 @@ import TableHead from "./components/TableHead";
 import TableBody from "./components/TableBody";
 
 class App extends Component {
-  state = { employee, search: "" };
+  state = {
+    employee, 
+    search: "",
+    alphabeticalOrder: true,
+  };
 
-  updateSearch (event) {
-    this.setState({search: event.target.value.substr(0,18)})
+  updateSearch(event) {
+    this.setState({ search: event.target.value.substr(0, 18) });
   }
 
+  handleSort = () => {
+    let sortedList;
+    if (this.state.alphabeticalOrder) {
+      sortedList = this.state.employee.sort((a, b) => a.name.localeCompare(b.name)); 
+    } else {
+      sortedList = this.state.employee.sort((a, b) => b.name.localeCompare(a.name));
+    }
+    this.setState ({
+      employee: sortedList,
+      alphabeticalOrder: !this.state.alphabeticalOrder,
+    });
+  };
+
   render() {
-    let filteredEmployee = this.state.employee.filter(
-      (em)=> {
-        return em.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
-      }
-    )
+    let filteredEmployee = this.state.employee.filter((em) => {
+      return (
+        em.name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
+      );
+    });
     return (
       <Container>
         <Jumbotron />
@@ -50,9 +67,11 @@ class App extends Component {
             </>
 
             <Table>
-              <TableHead />
+              <TableHead handleSort={this.handleSort} />
+
               {filteredEmployee.map((employees) => (
                 <TableBody
+                  key = {employees.id}
                   image={employees.image}
                   id={employees.id}
                   name={employees.name}
@@ -60,7 +79,7 @@ class App extends Component {
                   location={employees.location}
                   email={employees.email}
                   phone={employees.phone}
-                /> 
+                />
               ))}
             </Table>
           </EmployeeList>
